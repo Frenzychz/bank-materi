@@ -1,0 +1,167 @@
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth'
+
+export default function DashboardPage() {
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/admin/login')
+  }
+
+  // Tampilkan username atau email
+  const displayIdentifier = user?.email?.replace('@admin.com', '') || 'Admin'
+
+  return (
+    <div className="min-h-screen bg-slate-100 flex flex-col text-slate-800">
+      
+      {/* 1. Header Khusus Admin */}
+      <header className="bg-slate-900 text-white border-b border-slate-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-xl">⚙️</span>
+            <div>
+              <h1 className="font-extrabold text-sm sm:text-base leading-none text-white">
+                Admin Panel
+              </h1>
+              <p className="text-2xs text-slate-400 mt-0.5">
+                Bank Materi dan Latsol TKA & SNBT
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 sm:gap-4">
+            <div className="hidden sm:flex flex-col items-end text-xs">
+              <span className="text-slate-400">Masuk sebagai:</span>
+              <span className="font-bold text-blue-400">{displayIdentifier}</span>
+            </div>
+
+            <Link
+              to="/"
+              className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors"
+            >
+              Lihat Web Publik ↗
+            </Link>
+
+            <button
+              onClick={handleLogout}
+              className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white transition-colors"
+            >
+              Keluar
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* 2. Konten Utama Dashboard */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 w-full space-y-8">
+        
+        {/* Banner Selamat Datang */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
+            <span>●</span>
+            <span>Database Cloud Aktif</span>
+          </div>
+          <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+            Selamat Datang, {displayIdentifier}! 👋
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
+            Ini adalah pusat kendali kurikulum. Pilih salah satu jalur di bawah untuk mulai mengelola mata pelajaran, bab materi, atau mengunggah modul latihan baru.
+          </p>
+        </div>
+
+        {/* 3. TIGA MENU TINGKAT ATAS [TKA] [SNBT] [SETTINGS] */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          {/* KARTU 1: TKA */}
+          <Link
+            to="/admin/tka"
+            className="group bg-white border-2 border-slate-200 hover:border-blue-600 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                TKA
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                Kelola Materi TKA
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Kelola Fundamental TKA, Matematika, Bahasa Indonesia, Fisika, Kimia, Biologi, dan Matematika Lanjut.
+              </p>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600">
+              <span>Buka Menu TKA</span>
+              <span className="transform group-hover:translate-x-1 transition-transform">→</span>
+            </div>
+          </Link>
+
+          {/* KARTU 2: SNBT */}
+          <Link
+            to="/admin/snbt"
+            className="group bg-white border-2 border-slate-200 hover:border-indigo-600 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-xl group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                SNBT
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                Kelola Materi SNBT
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Kelola Fundamental SNBT, Penalaran Umum, PPU, PBM, Pengetahuan Kuantitatif, dan Literasi Bahasa.
+              </p>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-600">
+              <span>Buka Menu SNBT</span>
+              <span className="transform group-hover:translate-x-1 transition-transform">→</span>
+            </div>
+          </Link>
+
+          {/* KARTU 3: SETTINGS */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between opacity-90">
+            <div className="space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-xl">
+                ⚙️
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">
+                Pengaturan Sistem
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Informasi keamanan, koneksi Supabase Storage (PDF maks 50 MB), dan hak akses pengelola.
+              </p>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-slate-100 text-2xs text-slate-400 font-semibold">
+              Versi 1.0 (Akun Utama)
+            </div>
+          </div>
+
+        </div>
+
+        {/* Ringkasan Statistik Singkat */}
+        <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+          <div>
+            <div className="text-xl sm:text-2xl font-black text-slate-900">230</div>
+            <div className="text-2xs sm:text-xs text-slate-500 font-semibold mt-0.5">Total Bab & Materi</div>
+          </div>
+          <div>
+            <div className="text-xl sm:text-2xl font-black text-blue-600">1.014</div>
+            <div className="text-2xs sm:text-xs text-slate-500 font-semibold mt-0.5">Modul & Video Live</div>
+          </div>
+          <div>
+            <div className="text-xl sm:text-2xl font-black text-emerald-600">100%</div>
+            <div className="text-2xs sm:text-xs text-slate-500 font-semibold mt-0.5">Cloud Database</div>
+          </div>
+          <div>
+            <div className="text-xl sm:text-2xl font-black text-indigo-600">50 MB</div>
+            <div className="text-2xs sm:text-xs text-slate-500 font-semibold mt-0.5">Batas File PDF</div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  )
+}
