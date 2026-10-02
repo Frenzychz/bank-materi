@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Breadcrumb from '../../components/shared/Breadcrumb'
 import type { BreadcrumbItem } from '../../components/shared/Breadcrumb'
 import ResourceCard from '../../components/shared/ResourceCard'
+import ResourcePreviewModal from '../../components/shared/ResourcePreviewModal'
 import EmptyState from '../../components/shared/EmptyState'
 import LoadingState from '../../components/shared/LoadingState'
 import { nodesService } from '../../services/nodes.service'
@@ -19,6 +20,8 @@ export default function NodePage() {
   const [childNodes, setChildNodes] = useState<Node[]>([])
   const [resources, setResources] = useState<Resource[]>([])
   const [activeTab, setActiveTab] = useState<'materi' | 'latihan_soal'>('materi')
+  const [previewResource, setPreviewResource] = useState<Resource | null>(null)
+  const [highlightedResourceId, setHighlightedResourceId] = useState<string | null>(null)
 
   useEffect(() => {
     async function loadNodeData() {
@@ -57,6 +60,26 @@ export default function NodePage() {
 
     loadNodeData()
   }, [nodeId])
+
+  // Deteksi tautan langsung (#res-xxx) untuk auto-scroll dan auto-switch tab
+  useEffect(() => {
+    if (resources.length > 0 && window.location.hash) {
+      const targetId = window.location.hash.replace('#res-', '')
+      const found = resources.find((r) => r.id === targetId)
+      if (found) {
+        setActiveTab(found.category)
+        setHighlightedResourceId(found.id)
+        setTimeout(() => {
+          const el = document.getElementById(`res-${found.id}`)
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }
+        }, 250)
+        const timer = setTimeout(() => setHighlightedResourceId(null), 4000)
+        return () => clearTimeout(timer)
+      }
+    }
+  }, [resources])
 
   if (loading) {
     return (
@@ -98,7 +121,7 @@ export default function NodePage() {
       <div className="space-y-2">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors py-1"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors py-1 cursor-pointer"
         >
           <span>←</span>
           <span>Kembali</span>
@@ -107,17 +130,17 @@ export default function NodePage() {
       </div>
 
       {/* Header Info Halaman */}
-      <div className="space-y-2 border-b border-slate-200 pb-6">
+      <div className="space-y-2 border-b border-slate-200 dark:border-slate-800 pb-6">
         <div className="flex items-center gap-2">
-          <span className="text-xs px-2.5 py-0.5 font-bold uppercase tracking-wider rounded-md bg-slate-100 text-slate-700">
+          <span className="text-xs px-2.5 py-0.5 font-bold uppercase tracking-wider rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
             {currentNode.node_type.replace('_', ' ')}
           </span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           {currentNode.name}
         </h1>
         {currentNode.description && (
-          <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
             {currentNode.description}
           </p>
         )}
@@ -126,7 +149,7 @@ export default function NodePage() {
       {/* BAGIAN 1: Jika punya bab/submateri turunan */}
       {regularChildren.length > 0 && (
         <section className="space-y-4">
-          <h2 className="text-base sm:text-lg font-bold text-slate-900">
+          <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
             Pilih Materi / Sub-bab
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -134,19 +157,19 @@ export default function NodePage() {
               <Link
                 key={child.id}
                 to={`/${child.section}/${child.id}`}
-                className="bg-white border border-slate-200 hover:border-blue-500 rounded-xl p-4 sm:p-5 shadow-2xs hover:shadow-xs transition-all group flex flex-col justify-between"
+                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 rounded-xl p-4 sm:p-5 shadow-2xs hover:shadow-xs transition-all group flex flex-col justify-between"
               >
                 <div className="space-y-1.5">
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base group-hover:text-blue-600 transition-colors">
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     {child.name}
                   </h3>
                   {child.description && (
-                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                       {child.description}
                     </p>
                   )}
                 </div>
-                <div className="mt-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-600">
+                <div className="mt-4 pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
                   <span>Buka Materi</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -161,7 +184,7 @@ export default function NodePage() {
         <section className="space-y-4 pt-2">
           <div className="flex items-center gap-2">
             <span className="text-lg">🎯</span>
-            <h2 className="text-base sm:text-lg font-bold text-slate-900">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
               Koleksi Latihan Soal Terpadu
             </h2>
           </div>
@@ -170,22 +193,22 @@ export default function NodePage() {
               <Link
                 key={pc.id}
                 to={`/${pc.section}/${pc.id}`}
-                className="bg-amber-50/60 border border-amber-200 hover:border-amber-400 rounded-xl p-5 shadow-2xs hover:shadow-xs transition-all group flex flex-col justify-between"
+                className="bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 hover:border-amber-400 rounded-xl p-5 shadow-2xs hover:shadow-xs transition-all group flex flex-col justify-between"
               >
                 <div className="space-y-1.5">
-                  <span className="text-2xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm bg-amber-200/70 text-amber-900">
+                  <span className="text-2xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm bg-amber-200/70 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200">
                     Koleksi Latihan Soal
                   </span>
-                  <h3 className="font-bold text-slate-900 text-base group-hover:text-amber-800 transition-colors pt-1">
+                  <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-amber-800 dark:group-hover:text-amber-300 transition-colors pt-1">
                     {pc.name}
                   </h3>
                   {pc.description && (
-                    <p className="text-xs text-slate-600 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                       {pc.description}
                     </p>
                   )}
                 </div>
-                <div className="mt-4 pt-3 border-t border-amber-200/60 flex items-center justify-between text-xs font-semibold text-amber-800">
+                <div className="mt-4 pt-3 border-t border-amber-200/60 dark:border-amber-800/60 flex items-center justify-between text-xs font-semibold text-amber-800 dark:text-amber-300">
                   <span>Buka Koleksi Latihan</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -195,37 +218,37 @@ export default function NodePage() {
         </section>
       )}
 
-      {/* BAGIAN 3: Tab Materi & Latihan Soal (Untuk Submateri atau Koleksi) */}
+      {/* BAGIAN 3: Tab Materi & Latihan Soal */}
       {(regularChildren.length === 0 || resources.length > 0) && (
         <section className="space-y-6 pt-2">
           {/* Tombol Tab Pilihan: Materi vs Latihan Soal */}
-          <div className="flex border-b border-slate-200 gap-2 sm:gap-4">
+          <div className="flex border-b border-slate-200 dark:border-slate-800 gap-2 sm:gap-4">
             <button
               onClick={() => setActiveTab('materi')}
-              className={`pb-3 px-3 text-sm font-bold border-b-2 transition-colors flex items-center gap-2 ${
+              className={`pb-3 px-3 text-sm font-bold border-b-2 transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'materi'
-                  ? 'border-blue-600 text-blue-700'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  ? 'border-blue-600 text-blue-700 dark:text-blue-400'
+                  : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
               }`}
             >
               <span>📖</span>
               <span>Materi Pembelajaran</span>
-              <span className="text-xs py-0.5 px-2 rounded-full bg-slate-100 text-slate-600 font-semibold">
+              <span className="text-xs py-0.5 px-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold">
                 {materiResources.length}
               </span>
             </button>
 
             <button
               onClick={() => setActiveTab('latihan_soal')}
-              className={`pb-3 px-3 text-sm font-bold border-b-2 transition-colors flex items-center gap-2 ${
+              className={`pb-3 px-3 text-sm font-bold border-b-2 transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'latihan_soal'
-                  ? 'border-amber-600 text-amber-700'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  ? 'border-amber-600 text-amber-700 dark:text-amber-400'
+                  : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
               }`}
             >
               <span>✍️</span>
               <span>Latihan Soal</span>
-              <span className="text-xs py-0.5 px-2 rounded-full bg-slate-100 text-slate-600 font-semibold">
+              <span className="text-xs py-0.5 px-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold">
                 {latsolResources.length}
               </span>
             </button>
@@ -237,7 +260,12 @@ export default function NodePage() {
               materiResources.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {materiResources.map((res) => (
-                    <ResourceCard key={res.id} resource={res} />
+                    <ResourceCard
+                      key={res.id}
+                      resource={res}
+                      onPreview={setPreviewResource}
+                      isHighlighted={res.id === highlightedResourceId}
+                    />
                   ))}
                 </div>
               ) : (
@@ -250,7 +278,12 @@ export default function NodePage() {
             ) : latsolResources.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {latsolResources.map((res) => (
-                  <ResourceCard key={res.id} resource={res} />
+                  <ResourceCard
+                    key={res.id}
+                    resource={res}
+                    onPreview={setPreviewResource}
+                    isHighlighted={res.id === highlightedResourceId}
+                  />
                 ))}
               </div>
             ) : (
@@ -263,6 +296,13 @@ export default function NodePage() {
           </div>
         </section>
       )}
+
+      {/* Modal In-App Preview (YouTube & PDF) */}
+      <ResourcePreviewModal
+        isOpen={!!previewResource}
+        resource={previewResource}
+        onClose={() => setPreviewResource(null)}
+      />
     </div>
   )
 }

@@ -64,12 +64,12 @@ export default function SectionPage() {
       <Breadcrumb items={[{ label: currentSection.toUpperCase() }]} />
 
       {/* 2. Header Judul Section & Search Bar */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 pb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 dark:border-slate-800 pb-6">
         <div className="space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             {sectionTitle}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 max-w-xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
             {sectionDesc}
           </p>
         </div>
@@ -91,10 +91,10 @@ export default function SectionPage() {
         <section className="space-y-4">
           <div className="flex items-center gap-2">
             <span className="text-lg">⚡</span>
-            <h2 className="text-base sm:text-lg font-bold text-slate-900">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
               Materi Fundamental {currentSection.toUpperCase()}
             </h2>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-semibold">
+            <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-semibold border border-blue-200 dark:border-blue-800">
               Wajib Paham
             </span>
           </div>
@@ -104,19 +104,19 @@ export default function SectionPage() {
               <Link
                 key={fund.id}
                 to={`/${currentSection}/${fund.id}`}
-                className="bg-gradient-to-br from-blue-50/50 to-white border border-blue-200/80 hover:border-blue-500 rounded-xl p-4 sm:p-5 shadow-2xs hover:shadow-xs transition-all group flex flex-col justify-between"
+                className="bg-linear-to-br from-blue-50/50 to-white dark:from-blue-950/30 dark:to-slate-900 border border-blue-200/80 dark:border-blue-900/50 hover:border-blue-500 rounded-xl p-4 sm:p-5 shadow-2xs hover:shadow-xs transition-all group flex flex-col justify-between"
               >
                 <div className="space-y-1.5">
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base group-hover:text-blue-700 transition-colors">
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
                     {fund.name}
                   </h3>
                   {fund.description && (
-                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
                       {fund.description}
                     </p>
                   )}
                 </div>
-                <div className="mt-4 pt-3 border-t border-blue-100/60 flex items-center justify-between text-xs font-semibold text-blue-700">
+                <div className="mt-4 pt-3 border-t border-blue-100/60 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-blue-700 dark:text-blue-400">
                   <span>Buka Fundamental</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -131,17 +131,17 @@ export default function SectionPage() {
         <div className="space-y-10 pt-2">
           {/* A. SEKSI MATERI TKA WAJIB */}
           <section className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
               <div className="flex items-center gap-2">
                 <span className="text-lg">📘</span>
-                <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                   Materi TKA Wajib
                 </h2>
-                <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold border border-blue-200">
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-bold border border-blue-200 dark:border-blue-800">
                   Wajib Semua Jurusan
                 </span>
               </div>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Diujikan untuk seluruh peserta tes tanpa terkecuali
               </p>
             </div>
@@ -153,28 +153,28 @@ export default function SectionPage() {
                   <Link
                     key={sub.id}
                     to={`/${currentSection}/${sub.id}`}
-                    className="bg-white border-2 border-blue-100/80 hover:border-blue-500 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+                    className="bg-white dark:bg-slate-900 border-2 border-blue-100/80 dark:border-blue-900/50 hover:border-blue-500 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
                   >
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
                           {sub.name.charAt(0)}
                         </div>
-                        <span className="text-2xs font-bold px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-100">
+                        <span className="text-2xs font-bold px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800">
                           Wajib
                         </span>
                       </div>
-                      <h3 className="font-bold text-slate-900 text-base group-hover:text-blue-700 transition-colors">
+                      <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
                         {sub.name}
                       </h3>
                       {sub.description && (
-                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
+                        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
                           {cleanDescription(sub.description)}
                         </p>
                       )}
                     </div>
 
-                    <div className="mt-6 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-700">
+                    <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-blue-700 dark:text-blue-400">
                       <span>Lihat Bab & Materi</span>
                       <span className="group-hover:translate-x-1 transition-transform">→</span>
                     </div>
@@ -185,17 +185,17 @@ export default function SectionPage() {
 
           {/* B. SEKSI MATERI TKA PILIHAN */}
           <section className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
               <div className="flex items-center gap-2">
                 <span className="text-lg">🧪</span>
-                <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                   Materi TKA Pilihan
                 </h2>
-                <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold border border-slate-200">
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold border border-slate-200 dark:border-slate-700">
                   Peminatan / Jurusan
                 </span>
               </div>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Pilih mata pelajaran sesuai prodi impianmu
               </p>
             </div>
@@ -207,28 +207,28 @@ export default function SectionPage() {
                   <Link
                     key={sub.id}
                     to={`/${currentSection}/${sub.id}`}
-                    className="bg-white border border-slate-200 hover:border-slate-400 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+                    className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
                   >
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm group-hover:bg-slate-800 group-hover:text-white transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-bold text-sm group-hover:bg-slate-800 dark:group-hover:bg-slate-700 group-hover:text-white transition-colors">
                           {sub.name.charAt(0)}
                         </div>
-                        <span className="text-2xs font-medium px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
+                        <span className="text-2xs font-medium px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                           Pilihan
                         </span>
                       </div>
-                      <h3 className="font-bold text-slate-900 text-base group-hover:text-blue-600 transition-colors">
+                      <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {sub.name}
                       </h3>
                       {sub.description && (
-                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
+                        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
                           {cleanDescription(sub.description)}
                         </p>
                       )}
                     </div>
 
-                    <div className="mt-6 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-700 group-hover:text-blue-600">
+                    <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                       <span>Lihat Bab & Materi</span>
                       <span className="group-hover:translate-x-1 transition-transform">→</span>
                     </div>
@@ -240,7 +240,7 @@ export default function SectionPage() {
       ) : (
         /* 4. DAFTAR SUBTES UTBK-SNBT */
         <section className="space-y-4 pt-2">
-          <h2 className="text-base sm:text-lg font-bold text-slate-900">
+          <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
             Daftar Subtes UTBK-SNBT
           </h2>
 
@@ -249,23 +249,23 @@ export default function SectionPage() {
               <Link
                 key={sub.id}
                 to={`/${currentSection}/${sub.id}`}
-                className="bg-white border border-slate-200 hover:border-slate-400 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
               >
                 <div className="space-y-2">
-                  <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-bold text-sm group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                     {sub.name.charAt(0)}
                   </div>
-                  <h3 className="font-bold text-slate-900 text-base group-hover:text-indigo-600 transition-colors">
+                  <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                     {sub.name}
                   </h3>
                   {sub.description && (
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
                       {cleanDescription(sub.description)}
                     </p>
                   )}
                 </div>
 
-                <div className="mt-6 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-700 group-hover:text-indigo-600">
+                <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
                   <span>Lihat Bab & Materi</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>

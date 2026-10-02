@@ -3,11 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1e1b4b" />
+
+    <!-- Primary Meta Tags -->
     <title>Bank Materi & Latsol TKA & SNBT | By Frenzych</title>
+    <meta name="title" content="Bank Materi & Latsol TKA & SNBT | By Frenzych" />
+    <meta name="description" content="Pusat materi belajar, latihan soal, modul PDF, rangkuman Google Drive, dan video pembahasan YouTube untuk persiapan seleksi Perguruan Tinggi Negeri." />
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bank-materi.vercel.app/" />
+    <meta property="og:title" content="Bank Materi & Latsol TKA & SNBT | By Frenzych" />
+    <meta property="og:description" content="Pusat materi belajar, latihan soal, modul PDF, rangkuman Google Drive, dan video pembahasan YouTube untuk persiapan seleksi Perguruan Tinggi Negeri." />
+    <meta property="og:image" content="https://bank-materi.vercel.app/og-banner.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://bank-materi.vercel.app/" />
+    <meta property="twitter:title" content="Bank Materi & Latsol TKA & SNBT | By Frenzych" />
+    <meta property="twitter:description" content="Pusat materi belajar, latihan soal, modul PDF, rangkuman Google Drive, dan video pembahasan YouTube untuk persiapan seleksi Perguruan Tinggi Negeri." />
+    <meta property="twitter:image" content="https://bank-materi.vercel.app/og-banner.png" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {})
+        })
+      }
+    </script>
   </body>
 </html>

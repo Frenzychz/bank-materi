@@ -41,7 +41,7 @@ export default function SearchBar({
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}
         autoFocus={autoFocus}
-        className="w-full pl-10 sm:pl-11 pr-24 py-2.5 sm:py-3 rounded-xl border border-slate-300 bg-white text-sm sm:text-base text-slate-900 placeholder-slate-400 shadow-xs focus:outline-hidden focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all"
+        className="w-full pl-10 sm:pl-11 pr-24 py-2.5 sm:py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm sm:text-base text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 shadow-xs focus:outline-hidden focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all"
       />
 
       <div className="absolute inset-y-0 right-0 pr-2 flex items-center gap-1">

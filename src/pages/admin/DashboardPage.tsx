@@ -1,9 +1,39 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../../hooks/useAuth'
+import { settingsService } from '../../services/settings.service'
+import type { CountdownConfig } from '../../config/countdown'
+import { DEFAULT_COUNTDOWN_CONFIG } from '../../config/countdown'
 
 export default function DashboardPage() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+
+  // State untuk pengaturan hitung mundur
+  const [countdownConfig, setCountdownConfig] = useState<CountdownConfig>(DEFAULT_COUNTDOWN_CONFIG)
+  const [isSavingCountdown, setIsSavingCountdown] = useState(false)
+  const [countdownMessage, setCountdownMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    settingsService.getCountdownConfig().then((cfg) => {
+      setCountdownConfig(cfg)
+    })
+  }, [])
+
+  const handleSaveCountdown = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSavingCountdown(true)
+    setCountdownMessage(null)
+    try {
+      await settingsService.saveCountdownConfig(countdownConfig)
+      setCountdownMessage('✅ Tanggal hitung mundur berhasil diperbarui!')
+      setTimeout(() => setCountdownMessage(null), 4000)
+    } catch {
+      setCountdownMessage('❌ Gagal menyimpan perubahan.')
+    } finally {
+      setIsSavingCountdown(false)
+    }
+  }
 
   const handleLogout = async () => {
     await logout()
@@ -139,6 +169,139 @@ export default function DashboardPage() {
             </div>
           </div>
 
+        </div>
+
+        {/* 4. FORM PENGATURAN TANGGAL UJIAN (COUNTDOWN) */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xl">⏳</span>
+                <h3 className="text-lg font-bold text-slate-900">
+                  Pengaturan Tanggal Hitung Mundur (TKA & UTBK)
+                </h3>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">
+                Ubah tanggal dan judul target ujian yang tampil pada banner hitung mundur di halaman beranda publik.
+              </p>
+            </div>
+
+            {countdownMessage && (
+              <span className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 animate-in fade-in">
+                {countdownMessage}
+              </span>
+            )}
+          </div>
+
+          <form onSubmit={handleSaveCountdown} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Kolom 1: Jalur TKA */}
+              <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-4 sm:p-5 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-blue-600 text-white text-xs font-bold">
+                    TKA
+                  </span>
+                  <span className="text-sm font-bold text-slate-800">
+                    Target Tanggal Ujian TKA
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      Label / Judul Kartu TKA
+                    </label>
+                    <input
+                      type="text"
+                      value={countdownConfig.tkaLabel}
+                      onChange={(e) =>
+                        setCountdownConfig((prev) => ({ ...prev, tkaLabel: e.target.value }))
+                      }
+                      className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                      placeholder="Contoh: TKA 2026"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      Tanggal & Jam Pelaksanaan TKA
+                    </label>
+                    <input
+                      type="datetime-local"
+                      value={countdownConfig.tkaDate.slice(0, 16)}
+                      onChange={(e) =>
+                        setCountdownConfig((prev) => ({
+                          ...prev,
+                          tkaDate: e.target.value ? `${e.target.value}:00` : prev.tkaDate,
+                        }))
+                      }
+                      className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Kolom 2: Jalur UTBK */}
+              <div className="bg-indigo-50/50 border border-indigo-100 rounded-xl p-4 sm:p-5 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-indigo-600 text-white text-xs font-bold">
+                    SNBT
+                  </span>
+                  <span className="text-sm font-bold text-slate-800">
+                    Target Tanggal UTBK-SNBT
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      Label / Judul Kartu UTBK
+                    </label>
+                    <input
+                      type="text"
+                      value={countdownConfig.utbkLabel}
+                      onChange={(e) =>
+                        setCountdownConfig((prev) => ({ ...prev, utbkLabel: e.target.value }))
+                      }
+                      className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Contoh: UTBK-SNBT 2027"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      Tanggal & Jam Pelaksanaan UTBK
+                    </label>
+                    <input
+                      type="datetime-local"
+                      value={countdownConfig.utbkDate.slice(0, 16)}
+                      onChange={(e) =>
+                        setCountdownConfig((prev) => ({
+                          ...prev,
+                          utbkDate: e.target.value ? `${e.target.value}:00` : prev.utbkDate,
+                        }))
+                      }
+                      className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                type="submit"
+                disabled={isSavingCountdown}
+                className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white text-xs font-bold transition-colors flex items-center gap-2 shadow-xs cursor-pointer"
+              >
+                <span>{isSavingCountdown ? 'Menyimpan...' : '💾 Simpan Perubahan Tanggal'}</span>
+              </button>
+            </div>
+          </form>
         </div>
 
         {/* Ringkasan Statistik Singkat */}

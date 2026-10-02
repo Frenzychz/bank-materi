@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react'
+import ThemeToggle from '../shared/ThemeToggle'
 
 export default function Navbar() {
   const location = useLocation()
@@ -22,15 +23,15 @@ export default function Navbar() {
   const isSnbt = location.pathname.startsWith('/snbt')
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-xs">
+    <header className="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-xs transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Bagian Judul Website / Brand */}
           <Link to="/" className="flex flex-col group">
-            <span className="font-bold text-slate-900 text-base sm:text-lg group-hover:text-blue-600 transition-colors">
+            <span className="font-bold text-slate-900 dark:text-white text-base sm:text-lg group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
               Bank Materi & Latsol
             </span>
-            <span className="text-xs text-slate-500 font-medium tracking-wide">
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wide">
               TKA & SNBT by frenzych
             </span>
           </Link>
@@ -43,8 +44,8 @@ export default function Navbar() {
                 to={link.path}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   isActive(link.path)
-                    ? 'bg-blue-50 text-blue-700 font-semibold'
-                    : 'text-slate-600 hover:text-blue-600 hover:bg-slate-50'
+                    ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
                 {link.name}
@@ -55,7 +56,7 @@ export default function Navbar() {
             {isTka && (
               <Link
                 to="/tka/search"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-blue-700 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-lg transition-colors ml-1"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-700 dark:hover:text-blue-400 bg-slate-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/50 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors ml-1"
                 title="Pencarian Materi TKA"
               >
                 <span>🔍</span>
@@ -66,7 +67,7 @@ export default function Navbar() {
             {isSnbt && (
               <Link
                 to="/snbt/search"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-indigo-700 bg-slate-50 hover:bg-indigo-50 border border-slate-200 rounded-lg transition-colors ml-1"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 bg-slate-50 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors ml-1"
                 title="Pencarian Materi SNBT"
               >
                 <span>🔍</span>
@@ -74,23 +75,29 @@ export default function Navbar() {
               </Link>
             )}
 
-            <div className="h-4 w-px bg-slate-200 mx-2" />
+            <div className="h-4 w-px bg-slate-200 dark:bg-slate-700 mx-1" />
+
+            {/* Tombol Dark Mode */}
+            <ThemeToggle />
+
+            <div className="h-4 w-px bg-slate-200 dark:bg-slate-700 mx-1" />
 
             {/* Tombol Akses Admin */}
             <Link
               to="/admin/login"
-              className="px-3 py-2 text-xs font-semibold text-slate-500 hover:text-blue-700 hover:bg-slate-100 rounded-md transition-colors"
+              className="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors"
             >
               Masuk Admin
             </Link>
           </nav>
 
           {/* Tombol Hamburger Menu (khusus layar HP) */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center gap-1">
+            <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-hidden"
+              className="p-2 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-hidden"
               aria-label="Toggle menu"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -107,7 +114,7 @@ export default function Navbar() {
 
       {/* Menu Dropdown untuk Layar HP (Mobile) */}
       {isOpen && (
-        <div className="md:hidden border-t border-slate-100 bg-white px-4 pt-2 pb-4 space-y-1">
+        <div className="md:hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-4 space-y-1">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -115,8 +122,8 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
               className={`block px-3 py-2 rounded-md text-base font-medium ${
                 isActive(link.path)
-                  ? 'bg-blue-50 text-blue-700 font-semibold'
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-blue-600'
+                  ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400'
               }`}
             >
               {link.name}
@@ -127,7 +134,7 @@ export default function Navbar() {
             <Link
               to="/tka/search"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-semibold text-blue-700 bg-blue-50"
+              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/60"
             >
               <span>🔍</span>
               <span>Pencarian Materi TKA</span>
@@ -138,18 +145,18 @@ export default function Navbar() {
             <Link
               to="/snbt/search"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-semibold text-indigo-700 bg-indigo-50"
+              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-semibold text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60"
             >
               <span>🔍</span>
               <span>Pencarian Materi SNBT</span>
             </Link>
           )}
 
-          <div className="pt-2 border-t border-slate-100">
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
             <Link
               to="/admin/login"
               onClick={() => setIsOpen(false)}
-              className="block px-3 py-2 text-sm text-slate-500 hover:text-blue-600"
+              className="block px-3 py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400"
             >
               Masuk Admin
             </Link>

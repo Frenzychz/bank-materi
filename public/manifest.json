@@ -1,0 +1,23 @@
+{
+  "name": "Bank Materi & Latsol TKA & SNBT | By Frenzych",
+  "short_name": "Bank Materi",
+  "description": "Pusat modul PDF, rangkuman materi, dan video pembahasan untuk persiapan seleksi Perguruan Tinggi Negeri.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f172a",
+  "theme_color": "#1e1b4b",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/og-banner.png",
+      "sizes": "1200x630",
+      "type": "image/png"
+    }
+  ]
+}
