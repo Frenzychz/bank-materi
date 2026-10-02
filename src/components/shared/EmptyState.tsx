@@ -12,12 +12,12 @@ export default function EmptyState({
   action,
 }: EmptyStateProps) {
   return (
-    <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl p-8 sm:p-12 text-center space-y-3">
+    <div className="card-obsidian border border-dashed border-neutral-800 rounded-xl p-8 sm:p-12 text-center space-y-3">
       <div className="text-3xl sm:text-4xl">{icon}</div>
-      <h3 className="font-bold text-slate-800 text-sm sm:text-base">
+      <h3 className="font-bold text-white text-sm sm:text-base">
         {title}
       </h3>
-      <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
+      <p className="text-xs sm:text-sm text-neutral-400 max-w-md mx-auto leading-relaxed">
         {description}
       </p>
       {action && <div className="pt-2">{action}</div>}

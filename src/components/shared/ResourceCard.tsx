@@ -23,25 +23,19 @@ export default function ResourceCard({
       case 'pdf':
         return {
           label: 'PDF Document',
-          bgColor: 'bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800',
           previewText: 'Baca PDF',
-          btnBg: 'bg-rose-600 hover:bg-rose-700 text-white',
           icon: '📄',
         }
       case 'google_drive':
         return {
           label: 'Google Drive',
-          bgColor: 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
           previewText: 'Buka Drive',
-          btnBg: 'bg-emerald-600 hover:bg-emerald-700 text-white',
           icon: '📁',
         }
       case 'youtube':
         return {
           label: 'YouTube Video',
-          bgColor: 'bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800',
           previewText: 'Tonton di Web',
-          btnBg: 'bg-red-600 hover:bg-red-700 text-white',
           icon: '▶️',
         }
     }
@@ -64,10 +58,10 @@ export default function ResourceCard({
   return (
     <div
       id={`res-${resource.id}`}
-      className={`bg-white dark:bg-slate-900 border rounded-xl p-4 sm:p-5 shadow-xs transition-all duration-300 flex flex-col justify-between space-y-4 relative ${
+      className={`card-obsidian rounded-xl p-4 sm:p-5 flex flex-col justify-between space-y-4 relative ${
         isHighlighted
-          ? 'border-blue-500 ring-4 ring-blue-500/30 dark:ring-blue-500/20 scale-[1.01]'
-          : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+          ? 'border-white/60 ring-2 ring-white/20 scale-[1.01]'
+          : ''
       }`}
     >
       <div className="space-y-2.5">
@@ -75,21 +69,13 @@ export default function ResourceCard({
         <div className="flex items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-1.5">
             {/* Badge Tipe Sumber (PDF / Drive / YouTube) */}
-            <span
-              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold border ${sourceConfig.bgColor}`}
-            >
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-2xs font-mono font-medium border bg-neutral-900 text-neutral-300 border-neutral-800">
               <span>{sourceConfig.icon}</span>
               <span>{sourceConfig.label}</span>
             </span>
 
             {/* Badge Kategori (Materi / Latihan Soal) */}
-            <span
-              className={`px-2 py-0.5 rounded-md text-xs font-semibold ${
-                resource.category === 'materi'
-                  ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
-                  : 'bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
-              }`}
-            >
+            <span className="px-2 py-0.5 rounded-md text-2xs font-mono font-medium bg-neutral-900/90 text-neutral-400 border border-neutral-800">
               {resource.category === 'materi' ? 'Materi' : 'Latsol'}
             </span>
           </div>
@@ -98,16 +84,16 @@ export default function ResourceCard({
           <button
             onClick={handleCopyLink}
             type="button"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0 cursor-pointer"
+            className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 border border-transparent hover:border-neutral-800 transition-colors shrink-0 cursor-pointer"
             title="Salin tautan langsung ke modul ini"
             aria-label="Salin link materi"
           >
             {copied ? (
-              <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <span className="text-2xs font-mono font-bold text-neutral-200 flex items-center gap-1">
                 ✓ Disalin
               </span>
             ) : (
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -120,25 +106,25 @@ export default function ResourceCard({
         </div>
 
         {/* Judul Konten */}
-        <h4 className="font-bold text-slate-900 dark:text-white text-base leading-snug">
+        <h4 className="font-bold text-white text-base leading-snug">
           {resource.title}
         </h4>
 
         {/* Deskripsi (jika ada) */}
         {resource.description && (
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
+          <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed line-clamp-3">
             {resource.description}
           </p>
         )}
       </div>
 
       {/* Baris Tombol Aksi: Preview di Web & Buka Tab Baru */}
-      <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2">
+      <div className="pt-3 border-t border-neutral-900 flex items-center gap-2">
         {onPreview ? (
           <button
             onClick={() => onPreview(resource)}
             type="button"
-            className={`flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors shadow-xs cursor-pointer ${sourceConfig.btnBg}`}
+            className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer bg-white hover:bg-neutral-200 text-black hover:-translate-y-0.5 active:translate-y-0"
           >
             <span>{sourceConfig.previewText}</span>
             <span>👁️</span>
@@ -148,7 +134,7 @@ export default function ResourceCard({
             href={targetUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors shadow-xs ${sourceConfig.btnBg}`}
+            className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all shadow-xs bg-white hover:bg-neutral-200 text-black hover:-translate-y-0.5 active:translate-y-0"
           >
             <span>Buka Langsung</span>
             <span className="text-xs">↗</span>
@@ -160,7 +146,7 @@ export default function ResourceCard({
           href={targetUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors shrink-0"
+          className="p-2 rounded-lg border border-neutral-800 hover:border-neutral-700 bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors shrink-0"
           title="Buka langsung di tab baru browser"
         >
           <span className="text-xs font-bold">↗</span>

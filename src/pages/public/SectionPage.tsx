@@ -64,12 +64,12 @@ export default function SectionPage() {
       <Breadcrumb items={[{ label: currentSection.toUpperCase() }]} />
 
       {/* 2. Header Judul Section & Search Bar */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 dark:border-slate-800 pb-6">
-        <div className="space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-neutral-900 pb-6">
+        <div className="space-y-1.5">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             {sectionTitle}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-neutral-400 max-w-xl leading-relaxed">
             {sectionDesc}
           </p>
         </div>
@@ -90,13 +90,13 @@ export default function SectionPage() {
       {fundamentals.length > 0 && (
         <section className="space-y-4">
           <div className="flex items-center gap-2.5">
-            <span className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 text-base">
+            <span className="w-8 h-8 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-300 text-sm">
               ⚡
             </span>
-            <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight">
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
               Materi Fundamental {currentSection.toUpperCase()}
             </h2>
-            <span className="text-2xs px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-cyan-300 font-extrabold uppercase tracking-wider border border-blue-200 dark:border-cyan-400/30">
+            <span className="text-2xs font-mono font-medium px-2.5 py-0.5 rounded-md bg-neutral-900 text-neutral-300 border border-neutral-800 uppercase tracking-wider">
               Wajib Paham
             </span>
           </div>
@@ -106,21 +106,21 @@ export default function SectionPage() {
               <Link
                 key={fund.id}
                 to={`/${currentSection}/${fund.id}`}
-                className="group relative rounded-2xl p-5 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-cyan-400/80 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+                className="card-obsidian group rounded-xl p-5 flex flex-col justify-between"
               >
                 <div className="space-y-2">
-                  <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">
+                  <h3 className="font-bold text-white text-base group-hover:text-neutral-200 transition-colors">
                     {fund.name}
                   </h3>
                   {fund.description && (
-                    <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-neutral-400 line-clamp-2 leading-relaxed">
                       {fund.description}
                     </p>
                   )}
                 </div>
-                <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-blue-600 dark:text-cyan-400">
+                <div className="mt-5 pt-3 border-t border-neutral-900 flex items-center justify-between text-xs font-medium text-neutral-300 group-hover:text-white">
                   <span>Buka Konsep Dasar</span>
-                  <span className="group-hover:translate-x-1.5 transition-transform">→</span>
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
               </Link>
             ))}
@@ -133,54 +133,54 @@ export default function SectionPage() {
         <div className="space-y-10 pt-2">
           {/* A. SEKSI MATERI TKA WAJIB */}
           <section className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-900 pb-3">
               <div className="flex items-center gap-2.5">
-                <span className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 text-base">
+                <span className="w-8 h-8 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-300 text-sm">
                   📘
                 </span>
-                <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight">
+                <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
                   Materi TKA Wajib
                 </h2>
-                <span className="text-2xs px-3 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-extrabold uppercase tracking-wider border border-blue-200 dark:border-blue-800">
+                <span className="text-2xs font-mono font-medium px-2.5 py-0.5 rounded-md bg-neutral-900 text-neutral-300 border border-neutral-800 uppercase tracking-wider">
                   Semua Jurusan
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-neutral-500 font-mono">
                 Diujikan untuk seluruh peserta tes tanpa terkecuali
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
               {subjects
                 .filter((sub) => isTkaWajib(sub))
                 .map((sub) => (
                   <Link
                     key={sub.id}
                     to={`/${currentSection}/${sub.id}`}
-                    className="group relative rounded-2xl p-6 bg-white dark:bg-slate-900/80 border-2 border-blue-100 dark:border-slate-800 hover:border-blue-500 dark:hover:border-cyan-400/80 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+                    className="card-obsidian group rounded-xl p-5 flex flex-col justify-between"
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-cyan-300 border border-blue-200 dark:border-blue-800 flex items-center justify-center font-black text-base group-hover:scale-110 transition-transform">
+                        <div className="w-9 h-9 rounded-lg bg-neutral-900 text-white border border-neutral-800 flex items-center justify-center font-bold text-sm group-hover:border-neutral-600 transition-colors">
                           {sub.name.charAt(0)}
                         </div>
-                        <span className="text-2xs font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                        <span className="text-2xs font-mono font-medium uppercase tracking-wider px-2 py-0.5 rounded-md bg-neutral-900 text-neutral-300 border border-neutral-800">
                           Wajib
                         </span>
                       </div>
-                      <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">
+                      <h3 className="font-bold text-white text-base group-hover:text-neutral-200 transition-colors">
                         {sub.name}
                       </h3>
                       {sub.description && (
-                        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
+                        <p className="text-xs text-neutral-400 leading-relaxed line-clamp-2">
                           {cleanDescription(sub.description)}
                         </p>
                       )}
                     </div>
 
-                    <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-blue-600 dark:text-cyan-400">
+                    <div className="mt-5 pt-3 border-t border-neutral-900 flex items-center justify-between text-xs font-medium text-neutral-300 group-hover:text-white">
                       <span>Lihat Bab & Materi</span>
-                      <span className="group-hover:translate-x-1.5 transition-transform">→</span>
+                      <span className="group-hover:translate-x-1 transition-transform">→</span>
                     </div>
                   </Link>
                 ))}
@@ -189,54 +189,54 @@ export default function SectionPage() {
 
           {/* B. SEKSI MATERI TKA PILIHAN */}
           <section className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-900 pb-3">
               <div className="flex items-center gap-2.5">
-                <span className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 text-base">
+                <span className="w-8 h-8 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-300 text-sm">
                   🧪
                 </span>
-                <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight">
+                <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
                   Materi TKA Pilihan
                 </h2>
-                <span className="text-2xs px-3 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-extrabold uppercase tracking-wider border border-slate-200 dark:border-slate-700">
+                <span className="text-2xs font-mono font-medium px-2.5 py-0.5 rounded-md bg-neutral-900 text-neutral-400 border border-neutral-800 uppercase tracking-wider">
                   Peminatan Jurusan
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-neutral-500 font-mono">
                 Pilih mata pelajaran sesuai prodi impianmu
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
               {subjects
                 .filter((sub) => !isTkaWajib(sub))
                 .map((sub) => (
                   <Link
                     key={sub.id}
                     to={`/${currentSection}/${sub.id}`}
-                    className="group relative rounded-2xl p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+                    className="card-obsidian group rounded-xl p-5 flex flex-col justify-between"
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-black text-base group-hover:scale-110 transition-transform">
+                        <div className="w-9 h-9 rounded-lg bg-neutral-900 text-neutral-300 border border-neutral-800 flex items-center justify-center font-bold text-sm group-hover:border-neutral-600 transition-colors">
                           {sub.name.charAt(0)}
                         </div>
-                        <span className="text-2xs font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                        <span className="text-2xs font-mono font-medium uppercase tracking-wider px-2 py-0.5 rounded-md bg-neutral-900 text-neutral-400 border border-neutral-800">
                           Pilihan
                         </span>
                       </div>
-                      <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <h3 className="font-bold text-white text-base group-hover:text-neutral-200 transition-colors">
                         {sub.name}
                       </h3>
                       {sub.description && (
-                        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
+                        <p className="text-xs text-neutral-400 leading-relaxed line-clamp-2">
                           {cleanDescription(sub.description)}
                         </p>
                       )}
                     </div>
 
-                    <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                    <div className="mt-5 pt-3 border-t border-neutral-900 flex items-center justify-between text-xs font-medium text-neutral-300 group-hover:text-white">
                       <span>Lihat Bab & Materi</span>
-                      <span className="group-hover:translate-x-1.5 transition-transform">→</span>
+                      <span className="group-hover:translate-x-1 transition-transform">→</span>
                     </div>
                   </Link>
                 ))}
@@ -246,34 +246,36 @@ export default function SectionPage() {
       ) : (
         /* 4. DAFTAR SUBTES UTBK-SNBT */
         <section className="space-y-4 pt-2">
-          <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight">
-            Daftar Subtes UTBK-SNBT
-          </h2>
+          <div className="border-b border-neutral-900 pb-3">
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+              Daftar Subtes UTBK-SNBT
+            </h2>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {subjects.map((sub) => (
               <Link
                 key={sub.id}
                 to={`/${currentSection}/${sub.id}`}
-                className="group relative rounded-2xl p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-400/80 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+                className="card-obsidian group rounded-xl p-5 flex flex-col justify-between"
               >
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center font-black text-base group-hover:scale-110 transition-transform">
+                  <div className="w-9 h-9 rounded-lg bg-neutral-900 text-white border border-neutral-800 flex items-center justify-center font-bold text-sm group-hover:border-neutral-600 transition-colors">
                     {sub.name.charAt(0)}
                   </div>
-                  <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                  <h3 className="font-bold text-white text-base group-hover:text-neutral-200 transition-colors">
                     {sub.name}
                   </h3>
                   {sub.description && (
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
+                    <p className="text-xs text-neutral-400 leading-relaxed line-clamp-2">
                       {cleanDescription(sub.description)}
                     </p>
                   )}
                 </div>
 
-                <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                <div className="mt-5 pt-3 border-t border-neutral-900 flex items-center justify-between text-xs font-medium text-neutral-300 group-hover:text-white">
                   <span>Lihat Bab & Materi</span>
-                  <span className="group-hover:translate-x-1.5 transition-transform">→</span>
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
               </Link>
             ))}

@@ -41,15 +41,15 @@ export default function SearchBar({
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}
         autoFocus={autoFocus}
-        className="w-full pl-10 sm:pl-11 pr-24 py-2.5 sm:py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm sm:text-base text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 shadow-xs focus:outline-hidden focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all"
+        className="w-full pl-10 sm:pl-11 pr-24 py-2 sm:py-2.5 rounded-xl border border-neutral-800 bg-[#0e0e10] text-sm text-white placeholder-neutral-500 shadow-xs focus:outline-hidden focus:border-neutral-500 transition-all"
       />
 
-      <div className="absolute inset-y-0 right-0 pr-2 flex items-center gap-1">
+      <div className="absolute inset-y-0 right-0 pr-1.5 flex items-center gap-1">
         {query.trim() && (
           <button
             type="button"
             onClick={handleClear}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-md transition-colors text-xs"
+            className="p-1 text-neutral-400 hover:text-white rounded-md transition-colors text-xs"
             title="Hapus pencarian"
           >
             ✕
@@ -57,7 +57,7 @@ export default function SearchBar({
         )}
         <button
           type="submit"
-          className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-colors shadow-xs"
+          className="px-3 py-1 bg-white hover:bg-neutral-200 text-black text-xs font-semibold rounded-lg transition-colors cursor-pointer"
         >
           Cari
         </button>

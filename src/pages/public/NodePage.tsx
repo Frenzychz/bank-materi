@@ -121,7 +121,7 @@ export default function NodePage() {
       <div className="space-y-2">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors py-1 cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-neutral-400 hover:text-white transition-colors py-1 cursor-pointer"
         >
           <span>←</span>
           <span>Kembali</span>
@@ -130,17 +130,17 @@ export default function NodePage() {
       </div>
 
       {/* Header Info Halaman */}
-      <div className="space-y-2 border-b border-slate-200 dark:border-slate-800 pb-6">
+      <div className="space-y-2 border-b border-neutral-900 pb-6">
         <div className="flex items-center gap-2">
-          <span className="text-xs px-2.5 py-0.5 font-bold uppercase tracking-wider rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+          <span className="text-2xs font-mono font-medium px-2.5 py-0.5 uppercase tracking-wider rounded-md bg-neutral-900 text-neutral-300 border border-neutral-800">
             {currentNode.node_type.replace('_', ' ')}
           </span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
           {currentNode.name}
         </h1>
         {currentNode.description && (
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-neutral-400 max-w-3xl leading-relaxed">
             {currentNode.description}
           </p>
         )}
@@ -149,7 +149,7 @@ export default function NodePage() {
       {/* BAGIAN 1: Jika punya bab/submateri turunan */}
       {regularChildren.length > 0 && (
         <section className="space-y-4">
-          <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+          <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
             Pilih Materi / Sub-bab
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -157,19 +157,19 @@ export default function NodePage() {
               <Link
                 key={child.id}
                 to={`/${child.section}/${child.id}`}
-                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 rounded-xl p-4 sm:p-5 shadow-2xs hover:shadow-xs transition-all group flex flex-col justify-between"
+                className="card-obsidian group rounded-xl p-4 sm:p-5 flex flex-col justify-between"
               >
                 <div className="space-y-1.5">
-                  <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <h3 className="font-bold text-white text-sm sm:text-base group-hover:text-neutral-200 transition-colors">
                     {child.name}
                   </h3>
                   {child.description && (
-                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-neutral-400 line-clamp-2 leading-relaxed">
                       {child.description}
                     </p>
                   )}
                 </div>
-                <div className="mt-4 pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
+                <div className="mt-4 pt-2.5 border-t border-neutral-900 flex items-center justify-between text-xs font-medium text-neutral-300 group-hover:text-white">
                   <span>Buka Materi</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -183,8 +183,8 @@ export default function NodePage() {
       {practiceCollections.length > 0 && (
         <section className="space-y-4 pt-2">
           <div className="flex items-center gap-2">
-            <span className="text-lg">🎯</span>
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+            <span className="text-base">🎯</span>
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
               Koleksi Latihan Soal Terpadu
             </h2>
           </div>
@@ -193,22 +193,22 @@ export default function NodePage() {
               <Link
                 key={pc.id}
                 to={`/${pc.section}/${pc.id}`}
-                className="bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 hover:border-amber-400 rounded-xl p-5 shadow-2xs hover:shadow-xs transition-all group flex flex-col justify-between"
+                className="card-obsidian group rounded-xl p-5 flex flex-col justify-between border-neutral-700/60"
               >
                 <div className="space-y-1.5">
-                  <span className="text-2xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm bg-amber-200/70 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200">
+                  <span className="text-2xs font-mono font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm bg-neutral-900 text-neutral-300 border border-neutral-700">
                     Koleksi Latihan Soal
                   </span>
-                  <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-amber-800 dark:group-hover:text-amber-300 transition-colors pt-1">
+                  <h3 className="font-bold text-white text-base group-hover:text-neutral-200 transition-colors pt-1">
                     {pc.name}
                   </h3>
                   {pc.description && (
-                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <p className="text-xs text-neutral-400 leading-relaxed line-clamp-2">
                       {pc.description}
                     </p>
                   )}
                 </div>
-                <div className="mt-4 pt-3 border-t border-amber-200/60 dark:border-amber-800/60 flex items-center justify-between text-xs font-semibold text-amber-800 dark:text-amber-300">
+                <div className="mt-4 pt-3 border-t border-neutral-900 flex items-center justify-between text-xs font-medium text-neutral-300 group-hover:text-white">
                   <span>Buka Koleksi Latihan</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -222,18 +222,18 @@ export default function NodePage() {
       {(regularChildren.length === 0 || resources.length > 0) && (
         <section className="space-y-6 pt-2">
           {/* Tombol Tab Pilihan: Materi vs Latihan Soal */}
-          <div className="flex border-b border-slate-200 dark:border-slate-800 gap-2 sm:gap-4">
+          <div className="flex border-b border-neutral-900 gap-2 sm:gap-4">
             <button
               onClick={() => setActiveTab('materi')}
               className={`pb-3 px-3 text-sm font-bold border-b-2 transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'materi'
-                  ? 'border-blue-600 text-blue-700 dark:text-blue-400'
-                  : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
+                  ? 'border-white text-white'
+                  : 'border-transparent text-neutral-500 hover:text-neutral-300'
               }`}
             >
               <span>📖</span>
               <span>Materi Pembelajaran</span>
-              <span className="text-xs py-0.5 px-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold">
+              <span className="text-xs py-0.5 px-2 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 font-mono font-medium">
                 {materiResources.length}
               </span>
             </button>
@@ -242,13 +242,13 @@ export default function NodePage() {
               onClick={() => setActiveTab('latihan_soal')}
               className={`pb-3 px-3 text-sm font-bold border-b-2 transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'latihan_soal'
-                  ? 'border-amber-600 text-amber-700 dark:text-amber-400'
-                  : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
+                  ? 'border-white text-white'
+                  : 'border-transparent text-neutral-500 hover:text-neutral-300'
               }`}
             >
               <span>✍️</span>
               <span>Latihan Soal</span>
-              <span className="text-xs py-0.5 px-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold">
+              <span className="text-xs py-0.5 px-2 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 font-mono font-medium">
                 {latsolResources.length}
               </span>
             </button>

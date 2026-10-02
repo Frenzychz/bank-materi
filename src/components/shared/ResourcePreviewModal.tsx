@@ -56,20 +56,20 @@ export default function ResourcePreviewModal({
   const driveEmbedUrl = isDrive ? getDriveEmbedUrl(targetUrl) : null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/75 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-5xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col max-h-[92vh] overflow-hidden animate-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="bg-[#0e0e10] rounded-2xl w-full max-w-5xl shadow-2xl border border-neutral-800 flex flex-col max-h-[92vh] overflow-hidden animate-in zoom-in-95 duration-150">
         
         {/* Header Modal */}
-        <div className="px-4 sm:px-6 py-3.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 bg-slate-50/50 dark:bg-slate-900/50">
+        <div className="px-4 sm:px-6 py-3.5 border-b border-neutral-900 flex items-center justify-between gap-3 bg-[#0a0a0c]">
           <div className="flex items-center gap-2.5 min-w-0">
             <span className="text-xl shrink-0">
               {isYouTube ? '🎬' : isPdf ? '📄' : '📁'}
             </span>
             <div className="min-w-0">
-              <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base truncate">
+              <h3 className="font-bold text-white text-sm sm:text-base truncate">
                 {resource.title}
               </h3>
-              <p className="text-2xs text-slate-500 dark:text-slate-400 capitalize">
+              <p className="text-2xs font-mono text-neutral-400 capitalize">
                 {resource.category === 'materi' ? 'Materi Pembelajaran' : 'Latihan Soal'} •{' '}
                 {isYouTube ? 'YouTube Video' : isPdf ? 'Dokumen PDF' : 'Google Drive'}
               </p>
@@ -82,7 +82,7 @@ export default function ResourcePreviewModal({
               href={targetUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-neutral-900 hover:bg-neutral-800 text-neutral-300 border border-neutral-800 transition-colors"
               title="Buka langsung di tab baru"
             >
               <span>Buka di Tab Baru</span>
@@ -93,7 +93,7 @@ export default function ResourcePreviewModal({
             <button
               onClick={onClose}
               type="button"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer"
               aria-label="Tutup preview"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

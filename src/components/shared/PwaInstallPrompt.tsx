@@ -48,18 +48,18 @@ export default function PwaInstallPrompt() {
   return (
     <aside
       aria-label="Install Aplikasi"
-      className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-40 bg-white dark:bg-slate-900 border-2 border-blue-500/50 dark:border-blue-400/40 rounded-2xl p-4 shadow-2xl animate-in slide-in-from-bottom duration-300"
+      className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-40 card-obsidian border border-neutral-700/80 rounded-2xl p-4 shadow-2xl animate-in slide-in-from-bottom duration-300"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 text-white flex items-center justify-center font-bold text-lg shrink-0">
             📲
           </div>
           <div>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
+            <h4 className="text-sm font-bold text-white leading-tight">
               Pasang Aplikasi di HP
             </h4>
-            <p className="text-2xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
+            <p className="text-2xs text-neutral-400 mt-0.5 leading-relaxed">
               Buka materi lebih cepat, layar penuh tanpa bar URL browser.
             </p>
           </div>
@@ -68,18 +68,18 @@ export default function PwaInstallPrompt() {
         <button
           onClick={handleDismiss}
           type="button"
-          className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs p-1"
+          className="text-neutral-500 hover:text-white text-xs p-1"
           aria-label="Tutup saran instalasi"
         >
           ✕
         </button>
       </div>
 
-      <div className="mt-3 flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+      <div className="mt-3 flex items-center gap-2 pt-2 border-t border-neutral-900">
         <button
           onClick={handleInstallClick}
           type="button"
-          className="flex-1 py-2 px-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+          className="flex-1 py-2 px-3 rounded-lg bg-white hover:bg-neutral-200 text-black text-xs font-bold transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
         >
           <span>Install Sekarang</span>
           <span>↓</span>
@@ -87,7 +87,7 @@ export default function PwaInstallPrompt() {
         <button
           onClick={handleDismiss}
           type="button"
-          className="py-2 px-3 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
+          className="py-2 px-3 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white border border-neutral-800 text-xs font-medium transition-colors cursor-pointer"
         >
           Nanti Saja
         </button>

@@ -5,9 +5,9 @@ interface LoadingStateProps {
 export default function LoadingState({ message = 'Memuat data materi...' }: LoadingStateProps) {
   return (
     <div className="py-16 flex flex-col items-center justify-center space-y-4">
-      {/* Animasi Spinner Berputar Modern */}
-      <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
-      <p className="text-xs sm:text-sm text-slate-500 font-medium">
+      {/* Animasi Spinner Berputar Monokrom */}
+      <div className="w-8 h-8 border-2 border-neutral-800 border-t-white rounded-full animate-spin" />
+      <p className="text-xs font-mono text-neutral-400">
         {message}
       </p>
     </div>

@@ -11,9 +11,8 @@ interface BreadcrumbProps {
 
 export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
-    <nav className="flex items-center text-xs sm:text-sm text-slate-500 dark:text-slate-400 py-3 overflow-x-auto whitespace-nowrap">
-      <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-1">
-        <span>🏠</span>
+    <nav className="flex items-center text-xs font-mono text-neutral-400 py-2 overflow-x-auto whitespace-nowrap">
+      <Link to="/" className="hover:text-white transition-colors flex items-center gap-1">
         <span>Beranda</span>
       </Link>
 
@@ -22,13 +21,13 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
 
         return (
           <div key={index} className="flex items-center">
-            <span className="mx-2 text-slate-400 dark:text-slate-600">/</span>
+            <span className="mx-2 text-neutral-600">/</span>
             {isLast || !item.path ? (
-              <span className="font-semibold text-slate-800 dark:text-slate-200">
+              <span className="font-semibold text-white">
                 {item.label}
               </span>
             ) : (
-              <Link to={item.path} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              <Link to={item.path} className="hover:text-white transition-colors">
                 {item.label}
               </Link>
             )}
