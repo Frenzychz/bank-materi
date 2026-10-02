@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { settingsService } from '../../services/settings.service'
 import type { CountdownConfig } from '../../config/countdown'
 import { DEFAULT_COUNTDOWN_CONFIG } from '../../config/countdown'
+import { useSpotlight } from '../../hooks/useSpotlight'
 
 interface TimeLeft {
   days: number
@@ -40,6 +41,9 @@ function formatIndonesianDate(dateStr: string): string {
 }
 
 export default function CountdownWidget() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  useSpotlight(containerRef)
+
   const [config, setConfig] = useState<CountdownConfig>(DEFAULT_COUNTDOWN_CONFIG)
   const [isMinimized, setIsMinimized] = useState(() => {
     return localStorage.getItem('bank_materi_countdown_minimized') === 'true'
@@ -83,133 +87,172 @@ export default function CountdownWidget() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
-      <div className="bg-linear-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-lg border border-indigo-900/50 relative overflow-hidden transition-all duration-300">
-        {/* Dekorasi Glow Latar */}
-        <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-48 h-48 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
+    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div
+        ref={containerRef}
+        className="spotlight-interactive relative rounded-3xl p-5 sm:p-7 overflow-hidden bg-slate-900/90 dark:bg-slate-950/90 border border-slate-800/80 shadow-2xl backdrop-blur-xl transition-all duration-300"
+      >
+        {/* Lampu Sorot Ambient Glow */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow" />
 
-        {/* Header Widget */}
-        <div className="flex items-center justify-between gap-2 relative z-10">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-3 w-3 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500" />
-            </span>
-            <h2 className="text-sm sm:text-base font-bold tracking-wide text-amber-300 flex items-center gap-2">
-              <span>⏳ Hitung Mundur Ujian PTN</span>
-            </h2>
+        {/* Baris Header Jam Digital */}
+        <div className="flex items-center justify-between gap-3 relative z-10">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-400/20 flex items-center justify-center text-blue-400 shadow-inner">
+              <span className="text-base">⏳</span>
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+                <h3 className="text-xs sm:text-sm font-black tracking-wider uppercase text-slate-300">
+                  Target Waktu Ujian Seleksi PTN
+                </h3>
+              </div>
+              <p className="text-2xs text-slate-500 hidden sm:block">
+                Sinkronisasi hitung mundur resmi persiapan TKA dan UTBK-SNBT
+              </p>
+            </div>
           </div>
 
           <button
             onClick={toggleMinimize}
             type="button"
-            className="text-xs px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200 transition-colors flex items-center gap-1"
-            title={isMinimized ? 'Perluas tampilan hitung mundur' : 'Sembunyikan kartu hitung mundur'}
+            className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer"
           >
-            <span>{isMinimized ? 'Tampilkan' : 'Sembunyikan'}</span>
-            <span>{isMinimized ? '▼' : '▲'}</span>
+            <span>{isMinimized ? 'Buka Jam' : 'Sembunyikan'}</span>
+            <span className="text-2xs">{isMinimized ? '▼' : '▲'}</span>
           </button>
         </div>
 
-        {/* Isi Countdown (Grid 2 Kolom: TKA & UTBK) */}
+        {/* Plat Jam Digital (Dual Section: TKA & UTBK) */}
         {!isMinimized && (
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10 pt-2 border-t border-white/10">
-            {/* Kartu 1: TKA */}
-            <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4 backdrop-blur-xs flex flex-col justify-between">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded-md bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-400/30">
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-5 relative z-10 pt-4 border-t border-slate-800/80">
+            {/* PLAT 1: TKA */}
+            <div className="bg-slate-950/60 border border-white/10 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-4 shadow-inner">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <span className="px-2.5 py-0.5 rounded-md bg-blue-500/20 text-blue-400 text-2xs font-extrabold uppercase tracking-wider border border-blue-400/30">
                     Jalur TKA
                   </span>
-                  <span className="text-xs text-slate-300 font-medium">
+                  <span className="text-sm font-bold text-white tracking-tight">
                     {config.tkaLabel || 'TKA 2026'}
                   </span>
                 </div>
-                <span className="text-[11px] text-slate-400">
+                <span className="text-xs font-mono text-slate-400">
                   {formatIndonesianDate(config.tkaDate)}
                 </span>
               </div>
 
               {tkaTime.isExpired ? (
-                <div className="py-2 text-center text-sm font-semibold text-emerald-400">
+                <div className="py-4 text-center text-sm font-bold text-emerald-400 bg-emerald-950/20 border border-emerald-800/30 rounded-xl">
                   🎉 Ujian TKA Sedang / Telah Berlangsung!
                 </div>
               ) : (
-                <div className="grid grid-cols-4 gap-2 text-center mt-1">
-                  <div className="bg-black/30 rounded-lg py-1.5 px-1 border border-white/5">
-                    <span className="block text-lg sm:text-2xl font-black text-white font-mono leading-tight">
+                <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center">
+                  {/* Hari */}
+                  <div className="digital-clock-plate rounded-xl py-3 px-1 flex flex-col items-center justify-center">
+                    <span className="text-2xl sm:text-3xl font-black font-mono text-cyan-300 tracking-tight leading-none">
                       {tkaTime.days}
                     </span>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Hari</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">
+                      Hari
+                    </span>
                   </div>
-                  <div className="bg-black/30 rounded-lg py-1.5 px-1 border border-white/5">
-                    <span className="block text-lg sm:text-2xl font-black text-white font-mono leading-tight">
+
+                  {/* Jam */}
+                  <div className="digital-clock-plate rounded-xl py-3 px-1 flex flex-col items-center justify-center">
+                    <span className="text-2xl sm:text-3xl font-black font-mono text-slate-100 tracking-tight leading-none">
                       {String(tkaTime.hours).padStart(2, '0')}
                     </span>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Jam</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">
+                      Jam
+                    </span>
                   </div>
-                  <div className="bg-black/30 rounded-lg py-1.5 px-1 border border-white/5">
-                    <span className="block text-lg sm:text-2xl font-black text-white font-mono leading-tight">
+
+                  {/* Menit */}
+                  <div className="digital-clock-plate rounded-xl py-3 px-1 flex flex-col items-center justify-center">
+                    <span className="text-2xl sm:text-3xl font-black font-mono text-slate-100 tracking-tight leading-none">
                       {String(tkaTime.minutes).padStart(2, '0')}
                     </span>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Menit</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">
+                      Menit
+                    </span>
                   </div>
-                  <div className="bg-black/30 rounded-lg py-1.5 px-1 border border-white/5">
-                    <span className="block text-lg sm:text-2xl font-black text-amber-400 font-mono leading-tight">
+
+                  {/* Detik */}
+                  <div className="digital-clock-plate rounded-xl py-3 px-1 flex flex-col items-center justify-center border-blue-500/30">
+                    <span className="text-2xl sm:text-3xl font-black font-mono text-amber-400 tracking-tight leading-none animate-pulse">
                       {String(tkaTime.seconds).padStart(2, '0')}
                     </span>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Detik</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">
+                      Detik
+                    </span>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Kartu 2: UTBK-SNBT */}
-            <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4 backdrop-blur-xs flex flex-col justify-between">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 text-xs font-semibold border border-indigo-400/30">
+            {/* PLAT 2: UTBK-SNBT */}
+            <div className="bg-slate-950/60 border border-white/10 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-4 shadow-inner">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <span className="px-2.5 py-0.5 rounded-md bg-indigo-500/20 text-indigo-400 text-2xs font-extrabold uppercase tracking-wider border border-indigo-400/30">
                     Jalur SNBT
                   </span>
-                  <span className="text-xs text-slate-300 font-medium">
+                  <span className="text-sm font-bold text-white tracking-tight">
                     {config.utbkLabel || 'UTBK-SNBT 2027'}
                   </span>
                 </div>
-                <span className="text-[11px] text-slate-400">
+                <span className="text-xs font-mono text-slate-400">
                   {formatIndonesianDate(config.utbkDate)}
                 </span>
               </div>
 
               {utbkTime.isExpired ? (
-                <div className="py-2 text-center text-sm font-semibold text-emerald-400">
+                <div className="py-4 text-center text-sm font-bold text-emerald-400 bg-emerald-950/20 border border-emerald-800/30 rounded-xl">
                   🎉 UTBK-SNBT Sedang / Telah Berlangsung!
                 </div>
               ) : (
-                <div className="grid grid-cols-4 gap-2 text-center mt-1">
-                  <div className="bg-black/30 rounded-lg py-1.5 px-1 border border-white/5">
-                    <span className="block text-lg sm:text-2xl font-black text-white font-mono leading-tight">
+                <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center">
+                  {/* Hari */}
+                  <div className="digital-clock-plate rounded-xl py-3 px-1 flex flex-col items-center justify-center">
+                    <span className="text-2xl sm:text-3xl font-black font-mono text-indigo-300 tracking-tight leading-none">
                       {utbkTime.days}
                     </span>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Hari</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">
+                      Hari
+                    </span>
                   </div>
-                  <div className="bg-black/30 rounded-lg py-1.5 px-1 border border-white/5">
-                    <span className="block text-lg sm:text-2xl font-black text-white font-mono leading-tight">
+
+                  {/* Jam */}
+                  <div className="digital-clock-plate rounded-xl py-3 px-1 flex flex-col items-center justify-center">
+                    <span className="text-2xl sm:text-3xl font-black font-mono text-slate-100 tracking-tight leading-none">
                       {String(utbkTime.hours).padStart(2, '0')}
                     </span>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Jam</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">
+                      Jam
+                    </span>
                   </div>
-                  <div className="bg-black/30 rounded-lg py-1.5 px-1 border border-white/5">
-                    <span className="block text-lg sm:text-2xl font-black text-white font-mono leading-tight">
+
+                  {/* Menit */}
+                  <div className="digital-clock-plate rounded-xl py-3 px-1 flex flex-col items-center justify-center">
+                    <span className="text-2xl sm:text-3xl font-black font-mono text-slate-100 tracking-tight leading-none">
                       {String(utbkTime.minutes).padStart(2, '0')}
                     </span>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Menit</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">
+                      Menit
+                    </span>
                   </div>
-                  <div className="bg-black/30 rounded-lg py-1.5 px-1 border border-white/5">
-                    <span className="block text-lg sm:text-2xl font-black text-amber-400 font-mono leading-tight">
+
+                  {/* Detik */}
+                  <div className="digital-clock-plate rounded-xl py-3 px-1 flex flex-col items-center justify-center border-indigo-500/30">
+                    <span className="text-2xl sm:text-3xl font-black font-mono text-amber-400 tracking-tight leading-none animate-pulse">
                       {String(utbkTime.seconds).padStart(2, '0')}
                     </span>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Detik</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">
+                      Detik
+                    </span>
                   </div>
                 </div>
               )}
@@ -217,6 +260,6 @@ export default function CountdownWidget() {
           </div>
         )}
       </div>
-    </div>
+    </section>
   )
 }

@@ -89,25 +89,27 @@ export default function SectionPage() {
       {/* 3. MENU KHUSUS FUNDAMENTAL (Di bagian atas) */}
       {fundamentals.length > 0 && (
         <section className="space-y-4">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">⚡</span>
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+          <div className="flex items-center gap-2.5">
+            <span className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 text-base">
+              ⚡
+            </span>
+            <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight">
               Materi Fundamental {currentSection.toUpperCase()}
             </h2>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-semibold border border-blue-200 dark:border-blue-800">
+            <span className="text-2xs px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-cyan-300 font-extrabold uppercase tracking-wider border border-blue-200 dark:border-cyan-400/30">
               Wajib Paham
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {fundamentals.map((fund) => (
               <Link
                 key={fund.id}
                 to={`/${currentSection}/${fund.id}`}
-                className="bg-linear-to-br from-blue-50/50 to-white dark:from-blue-950/30 dark:to-slate-900 border border-blue-200/80 dark:border-blue-900/50 hover:border-blue-500 rounded-xl p-4 sm:p-5 shadow-2xs hover:shadow-xs transition-all group flex flex-col justify-between"
+                className="group relative rounded-2xl p-5 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-cyan-400/80 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
               >
-                <div className="space-y-1.5">
-                  <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                <div className="space-y-2">
+                  <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">
                     {fund.name}
                   </h3>
                   {fund.description && (
@@ -116,9 +118,9 @@ export default function SectionPage() {
                     </p>
                   )}
                 </div>
-                <div className="mt-4 pt-3 border-t border-blue-100/60 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-blue-700 dark:text-blue-400">
-                  <span>Buka Fundamental</span>
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-blue-600 dark:text-cyan-400">
+                  <span>Buka Konsep Dasar</span>
+                  <span className="group-hover:translate-x-1.5 transition-transform">→</span>
                 </div>
               </Link>
             ))}
@@ -132,13 +134,15 @@ export default function SectionPage() {
           {/* A. SEKSI MATERI TKA WAJIB */}
           <section className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">📘</span>
-                <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+              <div className="flex items-center gap-2.5">
+                <span className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 text-base">
+                  📘
+                </span>
+                <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight">
                   Materi TKA Wajib
                 </h2>
-                <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-bold border border-blue-200 dark:border-blue-800">
-                  Wajib Semua Jurusan
+                <span className="text-2xs px-3 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-extrabold uppercase tracking-wider border border-blue-200 dark:border-blue-800">
+                  Semua Jurusan
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -146,25 +150,25 @@ export default function SectionPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {subjects
                 .filter((sub) => isTkaWajib(sub))
                 .map((sub) => (
                   <Link
                     key={sub.id}
                     to={`/${currentSection}/${sub.id}`}
-                    className="bg-white dark:bg-slate-900 border-2 border-blue-100/80 dark:border-blue-900/50 hover:border-blue-500 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+                    className="group relative rounded-2xl p-6 bg-white dark:bg-slate-900/80 border-2 border-blue-100 dark:border-slate-800 hover:border-blue-500 dark:hover:border-cyan-400/80 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                   >
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-cyan-300 border border-blue-200 dark:border-blue-800 flex items-center justify-center font-black text-base group-hover:scale-110 transition-transform">
                           {sub.name.charAt(0)}
                         </div>
-                        <span className="text-2xs font-bold px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800">
+                        <span className="text-2xs font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                           Wajib
                         </span>
                       </div>
-                      <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                      <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">
                         {sub.name}
                       </h3>
                       {sub.description && (
@@ -174,9 +178,9 @@ export default function SectionPage() {
                       )}
                     </div>
 
-                    <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-blue-700 dark:text-blue-400">
+                    <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-blue-600 dark:text-cyan-400">
                       <span>Lihat Bab & Materi</span>
-                      <span className="group-hover:translate-x-1 transition-transform">→</span>
+                      <span className="group-hover:translate-x-1.5 transition-transform">→</span>
                     </div>
                   </Link>
                 ))}
@@ -186,13 +190,15 @@ export default function SectionPage() {
           {/* B. SEKSI MATERI TKA PILIHAN */}
           <section className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">🧪</span>
-                <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+              <div className="flex items-center gap-2.5">
+                <span className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 text-base">
+                  🧪
+                </span>
+                <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight">
                   Materi TKA Pilihan
                 </h2>
-                <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold border border-slate-200 dark:border-slate-700">
-                  Peminatan / Jurusan
+                <span className="text-2xs px-3 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-extrabold uppercase tracking-wider border border-slate-200 dark:border-slate-700">
+                  Peminatan Jurusan
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -200,25 +206,25 @@ export default function SectionPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {subjects
                 .filter((sub) => !isTkaWajib(sub))
                 .map((sub) => (
                   <Link
                     key={sub.id}
                     to={`/${currentSection}/${sub.id}`}
-                    className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+                    className="group relative rounded-2xl p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                   >
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-bold text-sm group-hover:bg-slate-800 dark:group-hover:bg-slate-700 group-hover:text-white transition-colors">
+                        <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-black text-base group-hover:scale-110 transition-transform">
                           {sub.name.charAt(0)}
                         </div>
-                        <span className="text-2xs font-medium px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                        <span className="text-2xs font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                           Pilihan
                         </span>
                       </div>
-                      <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {sub.name}
                       </h3>
                       {sub.description && (
@@ -228,9 +234,9 @@ export default function SectionPage() {
                       )}
                     </div>
 
-                    <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                    <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                       <span>Lihat Bab & Materi</span>
-                      <span className="group-hover:translate-x-1 transition-transform">→</span>
+                      <span className="group-hover:translate-x-1.5 transition-transform">→</span>
                     </div>
                   </Link>
                 ))}
@@ -240,22 +246,22 @@ export default function SectionPage() {
       ) : (
         /* 4. DAFTAR SUBTES UTBK-SNBT */
         <section className="space-y-4 pt-2">
-          <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+          <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight">
             Daftar Subtes UTBK-SNBT
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {subjects.map((sub) => (
               <Link
                 key={sub.id}
                 to={`/${currentSection}/${sub.id}`}
-                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+                className="group relative rounded-2xl p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-400/80 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
               >
-                <div className="space-y-2">
-                  <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-bold text-sm group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center font-black text-base group-hover:scale-110 transition-transform">
                     {sub.name.charAt(0)}
                   </div>
-                  <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                  <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                     {sub.name}
                   </h3>
                   {sub.description && (
@@ -265,9 +271,9 @@ export default function SectionPage() {
                   )}
                 </div>
 
-                <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
                   <span>Lihat Bab & Materi</span>
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="group-hover:translate-x-1.5 transition-transform">→</span>
                 </div>
               </Link>
             ))}
