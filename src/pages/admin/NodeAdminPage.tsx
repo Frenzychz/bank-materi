@@ -5,6 +5,8 @@ import type { BreadcrumbItem } from '../../components/shared/Breadcrumb'
 import Modal from '../../components/ui/Modal'
 import ConfirmDialog from '../../components/shared/ConfirmDialog'
 import LoadingState from '../../components/shared/LoadingState'
+import SortableNodeGrid from '../../components/admin/SortableNodeGrid'
+import SortableResourceGrid from '../../components/admin/SortableResourceGrid'
 import { nodesService } from '../../services/nodes.service'
 import { resourcesService } from '../../services/resources.service'
 import type { Node, Resource, NodeType, ResourceCategory, SourceType, ResourceStatus } from '../../types'
@@ -19,6 +21,7 @@ export default function NodeAdminPage() {
   const [childNodes, setChildNodes] = useState<Node[]>([])
   const [resources, setResources] = useState<Resource[]>([])
   const [activeTab, setActiveTab] = useState<'materi' | 'latihan_soal'>('materi')
+  const [reorderFeedback, setReorderFeedback] = useState<string | null>(null)
 
   // --- STATE MODAL NODE (SUB-BAB / KOLEKSI) ---
   const [isNodeModalOpen, setIsNodeModalOpen] = useState(false)
@@ -159,6 +162,57 @@ export default function NodeAdminPage() {
     }
   }
 
+  // Handle Drag & Drop Reorder Sub-bab (childNodes)
+  const handleReorderChildren = async (reordered: Node[]) => {
+    setChildNodes((prev) => {
+      const practice = prev.filter((n) => n.node_type === 'practice_collection')
+      return [...reordered, ...practice]
+    })
+    setReorderFeedback('Menyimpan urutan sub-bab...')
+    try {
+      await nodesService.reorderNodes(reordered.map((n) => n.id))
+      setReorderFeedback('✓ Urutan sub-bab berhasil diperbarui!')
+      setTimeout(() => setReorderFeedback(null), 2500)
+    } catch {
+      setReorderFeedback('❌ Gagal menyimpan urutan.')
+      setTimeout(() => setReorderFeedback(null), 3000)
+    }
+  }
+
+  // Handle Drag & Drop Reorder Practice Collections
+  const handleReorderPractice = async (reordered: Node[]) => {
+    setChildNodes((prev) => {
+      const regular = prev.filter((n) => n.node_type !== 'practice_collection')
+      return [...regular, ...reordered]
+    })
+    setReorderFeedback('Menyimpan urutan koleksi latihan...')
+    try {
+      await nodesService.reorderNodes(reordered.map((n) => n.id))
+      setReorderFeedback('✓ Urutan koleksi latihan berhasil diperbarui!')
+      setTimeout(() => setReorderFeedback(null), 2500)
+    } catch {
+      setReorderFeedback('❌ Gagal menyimpan urutan.')
+      setTimeout(() => setReorderFeedback(null), 3000)
+    }
+  }
+
+  // Handle Drag & Drop Reorder Resources (materi/latsol)
+  const handleReorderResources = async (reordered: Resource[]) => {
+    setResources((prev) => {
+      const otherTab = prev.filter((r) => r.category !== activeTab)
+      return [...otherTab, ...reordered]
+    })
+    setReorderFeedback(`Menyimpan urutan ${activeTab === 'materi' ? 'materi' : 'latihan soal'}...`)
+    try {
+      await resourcesService.reorderResources(reordered.map((r) => r.id))
+      setReorderFeedback('✓ Urutan materi berhasil diperbarui!')
+      setTimeout(() => setReorderFeedback(null), 2500)
+    } catch {
+      setReorderFeedback('❌ Gagal menyimpan urutan.')
+      setTimeout(() => setReorderFeedback(null), 3000)
+    }
+  }
+
   // --- HANDLER RESOURCE (MATERI / LATIHAN) ---
   const handleOpenAddRes = (category: ResourceCategory) => {
     setEditingRes(null)
@@ -296,7 +350,24 @@ export default function NodeAdminPage() {
 
       {/* Konten Utama */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full space-y-8">
-        <Breadcrumb items={breadcrumbs} />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <Breadcrumb items={breadcrumbs} />
+
+          {reorderFeedback && (
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold shadow-md animate-fade-in">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>{reorderFeedback}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Petunjuk Drag & Drop */}
+        <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-3.5 flex items-center gap-2.5 text-xs text-blue-900">
+          <span className="text-base">💡</span>
+          <p>
+            <strong>Tips Pengurutan:</strong> Kamu bisa langsung <strong>menyeret (drag & drop)</strong> kartu dengan mouse atau menggunakan tombol panah <strong>◀ / ▶</strong> untuk memindahkan posisi sub-bab dan materi secara instan.
+          </p>
+        </div>
 
         {/* Info Header Bab Saat Ini */}
         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-2">
@@ -324,7 +395,7 @@ export default function NodeAdminPage() {
                 Sub-bab & Materi Turunan ({regularChildren.length})
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                Bab materi spesifik yang berada di bawah naungan {currentNode.name}.
+                Bab materi spesifik yang berada di bawah naungan {currentNode.name}. Geser kartu untuk mengatur urutan.
               </p>
             </div>
 
@@ -344,54 +415,16 @@ export default function NodeAdminPage() {
             </div>
           </div>
 
-          {/* Daftar Submateri */}
+          {/* Daftar Submateri (Sortable Drag & Drop) */}
           {regularChildren.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {regularChildren.map((child) => (
-                <div
-                  key={child.id}
-                  className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-slate-300 transition-colors"
-                >
-                  <div>
-                    <div className="flex items-center justify-between text-2xs text-slate-400 font-bold mb-1">
-                      <span>Urutan: {child.sort_order}</span>
-                      <span className="text-slate-500 uppercase">{child.node_type}</span>
-                    </div>
-                    <h4 className="font-bold text-slate-900 text-sm">{child.name}</h4>
-                    {child.description && (
-                      <p className="text-xs text-slate-500 line-clamp-2 mt-1">{child.description}</p>
-                    )}
-                  </div>
-
-                  <div className="pt-2 border-t border-slate-200 flex items-center justify-between gap-2">
-                    <Link
-                      to={`/admin/nodes/${child.id}`}
-                      className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1"
-                    >
-                      <span>Masuk & Kelola</span>
-                      <span>→</span>
-                    </Link>
-
-                    <div className="flex items-center gap-1">
-                      <button
-                        onClick={() => handleOpenEditNode(child)}
-                        className="p-1.5 text-xs text-slate-500 hover:text-slate-900 rounded-md hover:bg-slate-200 transition-colors"
-                        title="Edit"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        onClick={() => handleOpenDeleteNode(child)}
-                        className="p-1.5 text-xs text-rose-500 hover:text-rose-700 rounded-md hover:bg-rose-100 transition-colors"
-                        title="Hapus"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <SortableNodeGrid
+              nodes={regularChildren}
+              onReorder={handleReorderChildren}
+              onEdit={handleOpenEditNode}
+              onDelete={handleOpenDeleteNode}
+              badge="Submateri"
+              badgeColor="bg-slate-100 text-slate-700 border-slate-200"
+            />
           ) : (
             <p className="text-xs text-slate-400 italic">
               Tidak ada sub-bab di bawah bagian ini. Materi langsung dikelola pada bagian bawah.
@@ -404,39 +437,14 @@ export default function NodeAdminPage() {
               <h4 className="text-xs font-bold uppercase tracking-wider text-amber-800">
                 Koleksi Latihan Soal Terpadu ({practiceCollections.length})
               </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {practiceCollections.map((pc) => (
-                  <div
-                    key={pc.id}
-                    className="bg-amber-50/60 border border-amber-200 rounded-xl p-4 flex items-center justify-between gap-3"
-                  >
-                    <div>
-                      <h5 className="font-bold text-slate-900 text-sm">{pc.name}</h5>
-                      <span className="text-2xs text-amber-800 font-semibold">Urutan: {pc.sort_order}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Link
-                        to={`/admin/nodes/${pc.id}`}
-                        className="px-2.5 py-1 text-xs font-bold text-amber-800 hover:bg-amber-100 rounded-md"
-                      >
-                        Kelola →
-                      </Link>
-                      <button
-                        onClick={() => handleOpenEditNode(pc)}
-                        className="p-1 text-xs text-slate-500 hover:text-slate-900"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        onClick={() => handleOpenDeleteNode(pc)}
-                        className="p-1 text-xs text-rose-500 hover:text-rose-700"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <SortableNodeGrid
+                nodes={practiceCollections}
+                onReorder={handleReorderPractice}
+                onEdit={handleOpenEditNode}
+                onDelete={handleOpenDeleteNode}
+                badge="Koleksi"
+                badgeColor="bg-amber-50 text-amber-800 border-amber-200"
+              />
             </div>
           )}
         </section>
@@ -449,7 +457,7 @@ export default function NodeAdminPage() {
                 File Modul & Tautan Materi
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                Kelola file PDF (maks 50 MB), link Google Drive, dan video YouTube.
+                Kelola file PDF (maks 50 MB), link Google Drive, dan video YouTube. Geser kartu untuk mengatur urutan.
               </p>
             </div>
 
@@ -496,7 +504,7 @@ export default function NodeAdminPage() {
             </button>
           </div>
 
-          {/* Daftar Resource */}
+          {/* Daftar Resource (Sortable Drag & Drop) */}
           {(() => {
             const currentResList = activeTab === 'materi' ? materiList : latsolList
             if (currentResList.length === 0) {
@@ -509,60 +517,12 @@ export default function NodeAdminPage() {
             }
 
             return (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {currentResList.map((res) => (
-                  <div
-                    key={res.id}
-                    className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-3 shadow-2xs hover:border-slate-300 transition-colors"
-                  >
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="text-2xs uppercase px-2 py-0.5 rounded-sm font-bold bg-slate-100 text-slate-700">
-                          {res.source_type.replace('_', ' ')}
-                        </span>
-                        <span className={`text-2xs font-bold px-2 py-0.5 rounded-sm ${
-                          res.status === 'published' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
-                        }`}>
-                          {res.status.toUpperCase()}
-                        </span>
-                      </div>
-
-                      <h4 className="font-bold text-slate-900 text-sm leading-snug">{res.title}</h4>
-                      {res.description && (
-                        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">{res.description}</p>
-                      )}
-                    </div>
-
-                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-                      <a
-                        href={res.url || res.file_path || '#'}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs font-bold text-blue-600 hover:underline"
-                      >
-                        Buka Link ↗
-                      </a>
-
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={() => handleOpenEditRes(res)}
-                          className="p-1.5 text-xs text-slate-500 hover:text-slate-900 rounded-md hover:bg-slate-100 transition-colors"
-                          title="Edit Materi"
-                        >
-                          ✏️
-                        </button>
-                        <button
-                          onClick={() => setDeleteResTarget(res)}
-                          className="p-1.5 text-xs text-rose-500 hover:text-rose-700 rounded-md hover:bg-rose-50 transition-colors"
-                          title="Hapus Materi"
-                        >
-                          🗑️
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <SortableResourceGrid
+                resources={currentResList}
+                onReorder={handleReorderResources}
+                onEdit={handleOpenEditRes}
+                onDelete={setDeleteResTarget}
+              />
             )
           })()}
         </section>

@@ -160,4 +160,20 @@ export const resourcesService = {
       filePath: filePath,
     }
   },
+
+  // 7. UPDATE URUTAN BANYAK RESOURCE SEKALIGUS (Drag & Drop Reorder)
+  async reorderResources(orderedIds: string[]): Promise<void> {
+    try {
+      const updates = orderedIds.map((id, index) =>
+        supabase
+          .from('resources')
+          .update({ sort_order: index + 1, updated_at: new Date().toISOString() })
+          .eq('id', id)
+      )
+      await Promise.all(updates)
+    } catch (err) {
+      console.error('Gagal memperbarui urutan resources:', err)
+      throw new Error('Gagal memperbarui urutan materi.')
+    }
+  },
 }

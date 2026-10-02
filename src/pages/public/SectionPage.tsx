@@ -5,6 +5,7 @@ import SearchBar from '../../components/shared/SearchBar'
 import LoadingState from '../../components/shared/LoadingState'
 import { nodesService } from '../../services/nodes.service'
 import type { Section, Node } from '../../types'
+import { isTkaWajib, cleanDescription } from '../../types'
 
 export default function SectionPage() {
   const location = useLocation()
@@ -125,41 +126,154 @@ export default function SectionPage() {
         </section>
       )}
 
-      {/* 4. DAFTAR MATA PELAJARAN / SUBTEST */}
-      <section className="space-y-4 pt-4">
-        <h2 className="text-base sm:text-lg font-bold text-slate-900">
-          {currentSection === 'tka' ? 'Daftar Mata Pelajaran TKA' : 'Daftar Subtes UTBK-SNBT'}
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {subjects.map((sub) => (
-            <Link
-              key={sub.id}
-              to={`/${currentSection}/${sub.id}`}
-              className="bg-white border border-slate-200 hover:border-slate-400 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
-            >
-              <div className="space-y-2">
-                <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                  {sub.name.charAt(0)}
-                </div>
-                <h3 className="font-bold text-slate-900 text-base group-hover:text-blue-600 transition-colors">
-                  {sub.name}
-                </h3>
-                {sub.description && (
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
-                    {sub.description}
-                  </p>
-                )}
+      {/* 4. DAFTAR MATA PELAJARAN (TKA: DIPISAH WAJIB & PILIHAN, SNBT: SUBTES UTBK) */}
+      {currentSection === 'tka' ? (
+        <div className="space-y-10 pt-2">
+          {/* A. SEKSI MATERI TKA WAJIB */}
+          <section className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">📘</span>
+                <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                  Materi TKA Wajib
+                </h2>
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold border border-blue-200">
+                  Wajib Semua Jurusan
+                </span>
               </div>
+              <p className="text-xs text-slate-500">
+                Diujikan untuk seluruh peserta tes tanpa terkecuali
+              </p>
+            </div>
 
-              <div className="mt-6 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-700 group-hover:text-blue-600">
-                <span>Lihat Bab & Materi</span>
-                <span className="group-hover:translate-x-1 transition-transform">→</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {subjects
+                .filter((sub) => isTkaWajib(sub))
+                .map((sub) => (
+                  <Link
+                    key={sub.id}
+                    to={`/${currentSection}/${sub.id}`}
+                    className="bg-white border-2 border-blue-100/80 hover:border-blue-500 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                          {sub.name.charAt(0)}
+                        </div>
+                        <span className="text-2xs font-bold px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-100">
+                          Wajib
+                        </span>
+                      </div>
+                      <h3 className="font-bold text-slate-900 text-base group-hover:text-blue-700 transition-colors">
+                        {sub.name}
+                      </h3>
+                      {sub.description && (
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
+                          {cleanDescription(sub.description)}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="mt-6 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-700">
+                      <span>Lihat Bab & Materi</span>
+                      <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </div>
+                  </Link>
+                ))}
+            </div>
+          </section>
+
+          {/* B. SEKSI MATERI TKA PILIHAN */}
+          <section className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">🧪</span>
+                <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                  Materi TKA Pilihan
+                </h2>
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold border border-slate-200">
+                  Peminatan / Jurusan
+                </span>
               </div>
-            </Link>
-          ))}
+              <p className="text-xs text-slate-500">
+                Pilih mata pelajaran sesuai prodi impianmu
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {subjects
+                .filter((sub) => !isTkaWajib(sub))
+                .map((sub) => (
+                  <Link
+                    key={sub.id}
+                    to={`/${currentSection}/${sub.id}`}
+                    className="bg-white border border-slate-200 hover:border-slate-400 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm group-hover:bg-slate-800 group-hover:text-white transition-colors">
+                          {sub.name.charAt(0)}
+                        </div>
+                        <span className="text-2xs font-medium px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
+                          Pilihan
+                        </span>
+                      </div>
+                      <h3 className="font-bold text-slate-900 text-base group-hover:text-blue-600 transition-colors">
+                        {sub.name}
+                      </h3>
+                      {sub.description && (
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
+                          {cleanDescription(sub.description)}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="mt-6 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-700 group-hover:text-blue-600">
+                      <span>Lihat Bab & Materi</span>
+                      <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </div>
+                  </Link>
+                ))}
+            </div>
+          </section>
         </div>
-      </section>
+      ) : (
+        /* 4. DAFTAR SUBTES UTBK-SNBT */
+        <section className="space-y-4 pt-2">
+          <h2 className="text-base sm:text-lg font-bold text-slate-900">
+            Daftar Subtes UTBK-SNBT
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {subjects.map((sub) => (
+              <Link
+                key={sub.id}
+                to={`/${currentSection}/${sub.id}`}
+                className="bg-white border border-slate-200 hover:border-slate-400 rounded-xl p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+              >
+                <div className="space-y-2">
+                  <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                    {sub.name.charAt(0)}
+                  </div>
+                  <h3 className="font-bold text-slate-900 text-base group-hover:text-indigo-600 transition-colors">
+                    {sub.name}
+                  </h3>
+                  {sub.description && (
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
+                      {cleanDescription(sub.description)}
+                    </p>
+                  )}
+                </div>
+
+                <div className="mt-6 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-700 group-hover:text-indigo-600">
+                  <span>Lihat Bab & Materi</span>
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }

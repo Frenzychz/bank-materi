@@ -178,4 +178,20 @@ export const nodesService = {
       throw new Error(`Gagal menghapus data: ${error.message}`)
     }
   },
+
+  // 9. UPDATE URUTAN BANYAK NODE SEKALIGUS (Drag & Drop Reorder)
+  async reorderNodes(orderedIds: string[]): Promise<void> {
+    try {
+      const updates = orderedIds.map((id, index) =>
+        supabase
+          .from('nodes')
+          .update({ sort_order: index + 1, updated_at: new Date().toISOString() })
+          .eq('id', id)
+      )
+      await Promise.all(updates)
+    } catch (err) {
+      console.error('Gagal memperbarui urutan nodes:', err)
+      throw new Error('Gagal memperbarui urutan bab/materi.')
+    }
+  },
 }
